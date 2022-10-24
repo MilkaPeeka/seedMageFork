@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 # using dataclasses as its easier to save and retrieve info
-@dataclass(unsafe_hash=True)
+@dataclass
 class Torrent:
     name: str
     size: int
@@ -32,6 +32,10 @@ class Torrent:
 
     def ratio(self) -> float:
         return self.uploaded / (self.downloaded + 1)
+
+
+    def __hash__(self):
+        return hash((self.name, self.announce_url, self.info_hash))
 def create_from_user_input(torrent_name, torrent_size, download_speed, upload_speed, announce_url, info_hash, client_id,
                            downloaded, uploaded) -> Torrent:
     # when we first add the torrent, we dont know if we can upload \ download. Therefore we will add the torrent with

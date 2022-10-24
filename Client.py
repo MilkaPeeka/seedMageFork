@@ -2,12 +2,6 @@ from dataclasses import dataclass
 import random
 import string
 
-
-# generates a random 12 digit id
-def random_id() -> int:
-    return ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k=12))
-
-
 # using dataclasses as its easier to save and retrieve info
 @dataclass(unsafe_hash=True)
 class Client:
@@ -21,12 +15,17 @@ class Client:
     available_download: int  # How much upload bandwidth is available in Bytes
     peer_id: str  # A peer ID which is originated in the ORIGINAL torrent client. example for one: -AZ3020-
 
-    total_downloaded: int
-    total_uploaded: int
+    total_downloaded: int  # a temp variable that will be used to display total download in each client via the website
+    total_uploaded: int  # same temp variable
+
+    download_speed: int  # a temp variable for website
+    upload_speed: int  # a temp variable for website
 
 
 def create_from_user_input(rand_id, client_name, user_agent, port, upload_limit, download_limit, peer_id) -> Client:
     available_upload = upload_limit
     available_download = download_limit
+    total_downloaded = 0
+    total_uploaded = 0
     return Client(rand_id, client_name, user_agent, port, upload_limit, download_limit, available_upload,
-                  available_download, peer_id, 0, 0)
+                  available_download, peer_id, total_downloaded, total_uploaded)
